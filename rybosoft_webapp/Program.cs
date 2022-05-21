@@ -4,8 +4,9 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Logger
 builder.Host.UseSerilog((ctx, lc) => lc
-        .WriteTo.File("./log.txt")
+        .WriteTo.File("./logs/log.txt")
         .ReadFrom.Configuration(ctx.Configuration));
 
 // Add services to the container.
@@ -36,7 +37,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseSerilogRequestLogging();
+// Request logger
+//app.UseSerilogRequestLogging();
 
 app.MapRazorPages();
 app.MapHub<ChatHub>("/chatHub");

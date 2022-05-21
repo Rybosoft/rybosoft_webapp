@@ -14,7 +14,8 @@ namespace rybosoft_webapp.Logic
         {
             var entity = new RyboDBContext();
 
-            return entity.Messages?.Take(top).ToList();
+            return entity.Messages?.OrderByDescending(o => o.RecordDate)
+                .Take(top).OrderBy(o => o.RecordDate).ToList();
         }
 
         public void SaveMessage(string user, string message)

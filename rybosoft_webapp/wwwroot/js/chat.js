@@ -13,11 +13,11 @@ connection.on("ReceiveMessage", function (user, message) {
 
 connection.start().then(function () {
     connection.invoke("GetLastMessages", 10).then(function (res) {
-        res.for(function (index) {
+        for (const message of res) {
             var li = document.createElement("li");
             document.getElementById("messagesList").appendChild(li);
-            li.textContent = `${index.userId} says ${index.messageText}`;
-        });
+            li.textContent = `${message.userId} says ${message.messageText}`;
+        }
     }).catch(function (err) {
         return console.error(err.toString());
     });
