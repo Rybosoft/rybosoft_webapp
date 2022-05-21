@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using rybosoft_webapp.Logic;
+using rybosoft_webapp.Models;
 
 namespace rybosoft_webapp.Hubs
 {
@@ -10,6 +11,11 @@ namespace rybosoft_webapp.Hubs
         public ChatHub(IGameLogic gameLogic)
         {
             _gameLogic = gameLogic;
+        }
+
+        public List<Messages>? GetLastMessages(int top)
+        {
+            return _gameLogic.GetMessages(top);
         }
 
         public async Task SendMessage(string user, string message)

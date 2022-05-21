@@ -2,10 +2,6 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
-var liTest = document.createElement("li");
-document.getElementById("messagesList").appendChild(liTest);
-liTest.textContent = `$Storico...`;
-
 //Disable the send button until connection is established.
 document.getElementById("sendButton").disabled = true;
 
@@ -19,6 +15,16 @@ connection.on("ReceiveMessage", function (user, message) {
 });
 
 connection.start().then(function () {
+    connection.invoke("GetLastMessages", 10).then(function (res) {
+        for (var i = 0; i < res.length; i++) {
+            var li = document.createElement("li");
+            document.getElementById("messagesList").appendChild(li);
+            li.textContent = `${res[i].userId} says ${res[i].messageText}`;
+        }
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
     document.getElementById("sendButton").disabled = false;
 }).catch(function (err) {
     return console.error(err.toString());
