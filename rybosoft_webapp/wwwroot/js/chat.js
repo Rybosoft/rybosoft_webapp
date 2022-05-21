@@ -8,19 +8,16 @@ document.getElementById("sendButton").disabled = true;
 connection.on("ReceiveMessage", function (user, message) {
     var li = document.createElement("li");
     document.getElementById("messagesList").appendChild(li);
-    // We can assign user-supplied strings to an element's textContent because it
-    // is not interpreted as markup. If you're assigning in any other way, you 
-    // should be aware of possible script injection concerns.
     li.textContent = `${user} says ${message}`;
 });
 
 connection.start().then(function () {
     connection.invoke("GetLastMessages", 10).then(function (res) {
-        for (var i = 0; i < res.length; i++) {
+        res.for(function (index) {
             var li = document.createElement("li");
             document.getElementById("messagesList").appendChild(li);
-            li.textContent = `${res[i].userId} says ${res[i].messageText}`;
-        }
+            li.textContent = `${index.userId} says ${index.messageText}`;
+        });
     }).catch(function (err) {
         return console.error(err.toString());
     });

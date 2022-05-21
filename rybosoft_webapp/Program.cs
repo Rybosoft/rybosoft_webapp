@@ -1,7 +1,12 @@
 using rybosoft_webapp.Hubs;
 using rybosoft_webapp.Logic;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((ctx, lc) => lc
+        .WriteTo.File("./log.txt")
+        .ReadFrom.Configuration(ctx.Configuration));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -30,6 +35,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSerilogRequestLogging();
 
 app.MapRazorPages();
 app.MapHub<ChatHub>("/chatHub");
